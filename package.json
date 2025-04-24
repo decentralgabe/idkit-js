@@ -1,7 +1,6 @@
 {
-	"private": true,
-	"version": "2.0.0",
-	"name": "idkit-monorepo",
+	"version": "2.1.0",
+	"name": "@decentralgabe/idkit",
 	"scripts": {
 		"dev": "turbo run dev",
 		"lint": "turbo run lint",
@@ -29,5 +28,8 @@
 		"plugins": [
 			"prettier-plugin-sort-imports-desc"
 		]
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
 	}
 }
