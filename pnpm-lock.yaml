@@ -30,10 +30,10 @@ importers:
 
   examples/with-next:
     dependencies:
-      '@worldcoin/idkit':
+      '@decentralgabe/idkit':
         specifier: workspace:*
         version: link:../../packages/react
-      '@worldcoin/idkit-core':
+      '@decentralgabe/idkit-core':
         specifier: workspace:*
         version: link:../../packages/core
       next:
@@ -95,6 +95,9 @@ importers:
 
   packages/react:
     dependencies:
+      '@decentralgabe/idkit-core':
+        specifier: workspace:*
+        version: link:../core
       '@radix-ui/react-dialog':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.0.9)(@types/react@18.0.25)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -104,9 +107,6 @@ importers:
       '@tailwindcss/forms':
         specifier: ^0.5.7
         version: 0.5.7(tailwindcss@3.4.4(ts-node@10.9.2(@types/node@18.11.9)(typescript@5.5.3)))
-      '@worldcoin/idkit-core':
-        specifier: workspace:*
-        version: link:../core
       copy-to-clipboard:
         specifier: ^3.3.3
         version: 3.3.3
@@ -201,7 +201,7 @@ importers:
 
   packages/standalone:
     dependencies:
-      '@worldcoin/idkit':
+      '@decentralgabe/idkit':
         specifier: workspace:^
         version: link:../react
       react:

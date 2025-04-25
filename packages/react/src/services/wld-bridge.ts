@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { useWorldBridgeStore } from '@worldcoin/idkit-core'
-import type { ISuccessResult, AppErrorCodes, VerificationState, IDKitConfig } from '@worldcoin/idkit-core'
+import { useWorldBridgeStore } from '@decentralgabe/idkit-core'
+import type { ISuccessResult, AppErrorCodes, VerificationState, IDKitConfig } from '@decentralgabe/idkit-core'
 
 type UseAppBridgeResponse = {
 	reset: () => void
