@@ -65,7 +65,7 @@
 	],
 	"license": "MIT",
 	"main": "src/index.ts",
-	"name": "@your-npm-username/idkit",
+	"name": "@decentralgabe/idkit",
 	"peerDependencies": {
 		"react": ">18.0.0",
 		"react-dom": ">18.0.0"
@@ -99,5 +99,5 @@
 			]
 		}
 	},
-	"version": "2.0.0"
+	"version": "2.1.1"
 }
