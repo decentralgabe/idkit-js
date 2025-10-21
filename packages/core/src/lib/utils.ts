@@ -8,7 +8,8 @@ export const buffer_encode = (buffer: ArrayBuffer): string => {
 }
 
 export const buffer_decode = (encoded: string): ArrayBuffer => {
-	return Buffer.from(encoded, 'base64')
+	const bytes = Buffer.from(encoded, 'base64')
+	return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength)
 }
 
 /**
@@ -26,7 +27,7 @@ export const verification_level_to_credential_types = (verification_level: Verif
 		case VerificationLevel.SecureDocument:
 			return [CredentialType.SecureDocument, CredentialType.Orb]
 		case VerificationLevel.Face:
-			return [CredentialType.Face]
+			return [CredentialType.Face, CredentialType.Orb]
 		case VerificationLevel.Orb:
 			return [CredentialType.Orb]
 		default:
@@ -63,11 +64,6 @@ export const credential_type_to_verification_level = (credential_type: Credentia
  * @returns true if the received level is acceptable, false otherwise
  *
  * @example
- * // Face level only accepts Face credentials
- * isValidCredential(VerificationLevel.Face, VerificationLevel.Face) // true
- * isValidCredential(VerificationLevel.Face, VerificationLevel.Orb) // false
- *
- * @example
  * // Device level accepts Device or Orb credentials
  * isValidCredential(VerificationLevel.Device, VerificationLevel.Device) // true
  * isValidCredential(VerificationLevel.Device, VerificationLevel.Orb) // true
@@ -75,8 +71,8 @@ export const credential_type_to_verification_level = (credential_type: Credentia
 export const isValidCredential = (requestedLevel: VerificationLevel, receivedLevel: VerificationLevel): boolean => {
 	switch (requestedLevel) {
 		case VerificationLevel.Face:
-			// Face level only accepts Face credentials
-			return receivedLevel === VerificationLevel.Face
+			// Accept Face or Orb credentials
+			return receivedLevel === VerificationLevel.Face || receivedLevel === VerificationLevel.Orb
 		case VerificationLevel.Orb:
 			// Orb level only accepts Orb credentials
 			return receivedLevel === VerificationLevel.Orb
