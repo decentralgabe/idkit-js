@@ -93,11 +93,10 @@ Optionally, IDKit also provides an `onSuccess` option, which you can use if your
 
 ### Face Authentication
 
-If you set `face_auth: true` when creating a request, the World App will require Face Authentication before issuing a proof.
+If you set `face_auth: true` when creating a request, the World App will require Face Authentication before generating a proof.
 
--   If Face Authentication fails or the user cancels/skips it, no proof will be issued.
+-   If Face Authentication fails or the user cancels/skips it, no proof will be generated.
 -   If you receive a proof for a `face_auth: true` request, Face Authentication already succeeded for that request.
--   Server-side verification remains unchanged; validate the proof as usual.
 
 React example:
 

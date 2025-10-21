@@ -29,7 +29,7 @@ const session = await new Session().create('app_id', 'your-action', {
 	verification_level: VerificationLevel.Orb, // Optional: Minimum verification level
 	action_description: 'Verify with World ID', // Optional
 	partner: false, // Optional
-	face_auth: true, // Optional: Require Face Authentication before issuing a proof
+	face_auth: true, // Optional
 })
 
 // Get the connector URI that redirects user to the World App
@@ -133,14 +133,16 @@ const session = await new Session().create(
 		verification_level?: string,    // Optional: Minimum verification level
 		action_description?: string,    // Optional: Human-readable action description
 		partner?: boolean,              // Optional: Whether this is a partner app
-		face_auth?: boolean            // Optional: Require Face Authentication before issuing a proof
+		face_auth?: boolean             // Optional: Require Face Authentication before generating a proof
 	}
 )
 ```
 
 #### Face Authentication
 
-If you set `face_auth: true`, the wallet requires Face Authentication before issuing a proof for this request. If Face Authentication fails or is not performed, no proof will be issued. If you receive a proof for a `face_auth: true` request, Face Authentication has already succeeded. Server-side verification remains unchanged; validate the proof as usual.
+If you set `face_auth: true`, the authenticator requires Face Authentication before generating a proof for this request. 
+If Face Authentication fails or is not performed, no proof will be generated. If you receive a proof for a 
+`face_auth: true` request, Face Authentication has already succeeded.
 
 #### Methods
 
