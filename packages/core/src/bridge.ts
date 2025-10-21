@@ -1,4 +1,3 @@
-import { type IDKitConfig } from '@/types/config'
 import { VerificationState } from '@/types/bridge'
 import { create, type StateCreator } from 'zustand'
 import type { ISuccessResult } from '@/types/result'
@@ -6,6 +5,7 @@ import type { CredentialType } from '@/types/config'
 import { validate_bridge_url } from './lib/validation'
 import { encodeAction, generateSignal } from '@/lib/hashing'
 import { AppErrorCodes, ResponseStatus } from '@/types/bridge'
+import { VerificationLevel, type IDKitConfig } from '@/types/config'
 import { decryptResponse, encryptRequest, exportKey, generateKey } from '@/lib/crypto'
 import {
 	DEFAULT_VERIFICATION_LEVEL,
@@ -56,7 +56,16 @@ const createStoreImplementation: StateCreator<WorldBridgeStore> = (set, get) => 
 	bridge_url: DEFAULT_BRIDGE_URL,
 	verificationState: VerificationState.PreparingClient,
 
-	createClient: async ({ bridge_url, app_id, verification_level, action_description, action, signal, partner }) => {
+	createClient: async ({
+		bridge_url,
+		app_id,
+		verification_level,
+		action_description,
+		action,
+		signal,
+		partner,
+		face_auth,
+	}) => {
 		const { key, iv } = await generateKey()
 
 		if (bridge_url) {
@@ -66,6 +75,13 @@ const createStoreImplementation: StateCreator<WorldBridgeStore> = (set, get) => 
 				set({ verificationState: VerificationState.Failed })
 				throw new Error('Invalid bridge_url. Please check the console for more details.')
 			}
+		}
+
+		const requestedLevel = verification_level ?? DEFAULT_VERIFICATION_LEVEL
+		const enforcedFaceAuth = requestedLevel === VerificationLevel.Face ? true : Boolean(face_auth)
+
+		if (requestedLevel === VerificationLevel.Face && face_auth !== true) {
+			console.warn('face_auth was not set to true for Face verification_level; enabling face_auth automatically.')
 		}
 
 		const res = await fetch(new URL('/request', bridge_url ?? DEFAULT_BRIDGE_URL), {
@@ -80,10 +96,9 @@ const createStoreImplementation: StateCreator<WorldBridgeStore> = (set, get) => 
 						action_description,
 						action: encodeAction(action),
 						signal: generateSignal(signal).digest,
-						credential_types: verification_level_to_credential_types(
-							verification_level ?? DEFAULT_VERIFICATION_LEVEL
-						),
-						verification_level: verification_level ?? DEFAULT_VERIFICATION_LEVEL,
+						credential_types: verification_level_to_credential_types(requestedLevel),
+						verification_level: requestedLevel,
+						face_auth: enforcedFaceAuth,
 					})
 				)
 			),
